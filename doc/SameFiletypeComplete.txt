@@ -1,0 +1,116 @@
+*SameFiletypeComplete.txt*	Insert mode completion from buffers with the same filetype.
+
+		   SAME FILETYPE COMPLETE    by Ingo Karkat
+						    *SameFiletypeComplete.vim*
+description			|SameFiletypeComplete-description|
+usage				|SameFiletypeComplete-usage|
+installation			|SameFiletypeComplete-installation|
+configuration			|SameFiletypeComplete-configuration|
+limitations			|SameFiletypeComplete-limitations|
+known problems			|SameFiletypeComplete-known-problems|
+todo				|SameFiletypeComplete-todo|
+history				|SameFiletypeComplete-history|
+
+==============================================================================
+DESCRIPTION				    *SameFiletypeComplete-description*
+
+When editing multiple projects (e.g. Python and Java) concurrently, or even
+when different types of files (like C source code, its Makefile, and the
+corresponding HTML documentation) are open in Vim, the general insert-mode
+completion |i_CTRL-N| becomes less useful. It searches for keywords in open
+windows, listed buffers, and other sources as defined by the 'complete'
+setting; there's no way to restrict the sources to consider only buffers that
+have the same filetype as the current buffer, so a lot of unrelated cruft
+clutters the list of completion matches.
+
+This plugin offers an alternative completion that works like the general one,
+but lists completion candidates only from buffers that have the same
+'filetype' as the current buffer. When you're editing a Python file, you'll
+only get matches from other open Python files. Switch to the Makefile and all
+those inapplicable Python keywords won't be offered there.
+
+SOURCE									     *
+
+This completion type was motivated by this Stack Overflow question:
+    http://stackoverflow.com/questions/12610516/can-vims-keyword-completion-be-limited-to-only-same-filetype
+
+SEE ALSO								     *
+
+- Check out the |CompleteHelper.vim| plugin page (vimscript #3914) for a full
+  list of insert mode completions powered by it.
+
+==============================================================================
+USAGE						  *SameFiletypeComplete-usage*
+
+In insert mode, invoke the completion via CTRL-X =
+You can then search forward and backward via CTRL-N / CTRL-P, as usual.
+								  *i_CTRL-X_=*
+CTRL-X =		Find matches for words that start with the
+			keyword in front of the cursor, looking only into
+			buffers with the same 'filetype'.
+			Further use of CTRL-X = will copy the words following
+			the previous expansion.
+
+==============================================================================
+INSTALLATION				   *SameFiletypeComplete-installation*
+
+This script is packaged as a |vimball|. If you have the "gunzip" decompressor
+in your PATH, simply edit the *.vmb.gz package in Vim; otherwise, decompress
+the archive first, e.g. using WinZip. Inside Vim, install by sourcing the
+vimball or via the |:UseVimball| command. >
+    vim SameFiletypeComplete*.vmb.gz
+    :so %
+To uninstall, use the |:RmVimball| command.
+
+DEPENDENCIES				   *SameFiletypeComplete-dependencies*
+
+- Requires Vim 7.0 or higher.
+- Requires the |CompleteHelper.vim| plugin (vimscript #3914), version 1.30 or
+  higher.
+
+==============================================================================
+CONFIGURATION				  *SameFiletypeComplete-configuration*
+
+For a permanent configuration, put the following commands into your |vimrc|:
+
+	   *b:SameFiletypeComplete_complete* *g:SameFiletypeComplete_complete*
+Analoguous to the 'complete' option, you can specify which buffers will be
+scanned for completion candidates. Currently, '.' (current buffer), 'w'
+(buffers from other windows), and 'b' (other listed buffers) are supported. >
+    let g:SameFiletypeComplete_complete = '.,w,b'
+The global setting can be overridden for a particular buffer
+(b:SameFiletypeComplete_complete).
+						  *SameFiletypeComplete-remap*
+If you want to use a different mapping, map your keys to the
+<Plug>(SameFiletypeComplete) mapping target _before_ sourcing the script (e.g.
+in your |vimrc|): >
+    imap <C-x>= <Plug>(SameFiletypeComplete)
+<
+==============================================================================
+LIMITATIONS				    *SameFiletypeComplete-limitations*
+
+KNOWN PROBLEMS				 *SameFiletypeComplete-known-problems*
+
+TODO						   *SameFiletypeComplete-todo*
+
+- How to handle compound filetypes (e.g. "c.doxygen")? Right now, the filetype
+  must match exactly.
+
+IDEAS						  *SameFiletypeComplete-ideas*
+
+- Allow multiple filetypes to be searched via a buffer-local
+  b:SameFiletypeComplete_Filetypes variable, e.g. to include "java" in "jsp".
+
+==============================================================================
+HISTORY						*SameFiletypeComplete-history*
+
+1.00	27-Sep-2012
+First published version.
+
+==============================================================================
+Copyright: (C) 2012 Ingo Karkat
+The VIM LICENSE applies to this script; see |copyright|.
+
+Maintainer:	Ingo Karkat <ingo@karkat.de>
+==============================================================================
+ vim:tw=78:ts=8:ft=help:norl:

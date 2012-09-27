@@ -1,0 +1,35 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=4242
+
+DESCRIPTION
+When editing multiple projects (e.g. Python and Java) concurrently, or even
+when different types of files (like C source code, its Makefile, and the
+corresponding HTML documentation) are open in Vim, the general insert-mode
+completion i_CTRL-N becomes less useful. It searches for keywords in open
+windows, listed buffers, and other sources as defined by the 'complete'
+setting; there's no way to restrict the sources to consider only buffers that
+have the same filetype as the current buffer, so a lot of unrelated cruft
+clutters the list of completion matches.
+
+This plugin offers an alternative completion that works like the general one,
+but lists completion candidates only from buffers that have the same
+'filetype' as the current buffer. When you're editing a Python file, you'll
+only get matches from other open Python files. Switch to the Makefile and all
+those inapplicable Python keywords won't be offered there.
+
+SOURCE
+This completion type was motivated by this Stack Overflow question:
+    http://stackoverflow.com/questions/12610516/can-vims-keyword-completion-be-limited-to-only-same-filetype
+
+SEE ALSO
+- Check out the CompleteHelper.vim plugin page (vimscript #3914) for a full
+  list of insert mode completions powered by it.
+
+USAGE
+In insert mode, invoke the completion via CTRL-X =
+You can then search forward and backward via CTRL-N / CTRL-P, as usual.
+
+CTRL-X =                Find matches for words that start with the
+                        keyword in front of the cursor, looking only into
+                        buffers with the same 'filetype'.
+                        Further use of CTRL-X = will copy the words following
+                        the previous expansion.
